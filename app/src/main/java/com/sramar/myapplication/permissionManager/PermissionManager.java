@@ -1,4 +1,4 @@
-package com.sramar.myapplication.appManager;
+package com.sramar.myapplication.permissionManager;
 
 import android.Manifest;
 import android.app.Activity;
