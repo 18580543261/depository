@@ -1,4 +1,4 @@
-package com.sramar.myapplication.appManager;
+package com.sramar.myapplication.appManager.callbacks;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -15,6 +15,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 
+import com.sramar.myapplication.appManager.AppManager;
 import com.sramar.myapplication.baseApplication.Constances;
 
 import java.lang.ref.WeakReference;
@@ -47,17 +48,15 @@ public class NetStatusReceiver extends BroadcastReceiver {
                     if (netWorkState==0&&LAST_TYPE!=0){
                         WIFI_TIME=time;
                         LAST_TYPE=netWorkState;
-                        Constances.isNetWork = true;
                     }else {
                         ETHERNET_TIME=time;
                         LAST_TYPE=netWorkState;
-                        Constances.isNetWork = true;
                     }
+                    AppManager.getInstance().setNetStatus(true);
                 }else if(netWorkState==-1&&LAST_TYPE!=-1){
                     NONE_TIME=time;
-                    Toast.makeText(context, "网络状态不可用", Toast.LENGTH_SHORT).show();
                     LAST_TYPE=netWorkState;
-                    Constances.isNetWork = false;
+                    AppManager.getInstance().setNetStatus(false);
                 }
             }
         }

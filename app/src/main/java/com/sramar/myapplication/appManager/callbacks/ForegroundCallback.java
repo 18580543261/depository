@@ -1,4 +1,4 @@
-package com.sramar.myapplication.appManager;
+package com.sramar.myapplication.appManager.callbacks;
 
 import android.app.Activity;
 import android.app.Application;
