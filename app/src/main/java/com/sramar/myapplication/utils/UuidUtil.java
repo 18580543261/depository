@@ -22,7 +22,7 @@ public class UuidUtil {
      * @param mContext
      * @return
      */
-    public synchronized static String getUDID(Context mContext) {
+    public synchronized static String getUuid(Context mContext) {
         if (uuid == null) {
             if (uuid == null) {
                 final SharedPreferences prefs = mContext.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);

@@ -3,9 +3,6 @@ package com.sramar.myapplication.database;
 import android.content.ContentValues;
 import android.content.Context;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -228,7 +225,7 @@ public abstract class ABeans {
         }
         return contentValues;
     }
-    public ContentValues put(JSONObject map){
+    public ContentValues put(org.json.JSONObject map){
         ContentValues contentValues = new ContentValues();
         Iterator<String> it = map.keys();
         while (it.hasNext()){
@@ -236,14 +233,13 @@ public abstract class ABeans {
             if (mFieldsName.contains(key)){
                 try {
                     contentValues.put(key, (String) map.get(key));
-                } catch (JSONException e) {
+                } catch (org.json.JSONException e) {
                     e.printStackTrace();
                 }
             }
         }
         return contentValues;
     }
-
 
     //动态获取，根据反射，比如获取xx.xx.xx.xx.Action 这个所有的实现类。 xx.xx.xx.xx 表示包名  Action为接口名或者类名
     public static List<Class<?>> getAllActionSubClass(String classPackageAndName) {
@@ -296,15 +292,5 @@ public abstract class ABeans {
     private static String appendSql(String start,String content){
         return start+content+",";
     }
-
-
-    private class MyField{
-        EBeanField eBeanField;
-
-    }
-
-
-
-
 
 }
