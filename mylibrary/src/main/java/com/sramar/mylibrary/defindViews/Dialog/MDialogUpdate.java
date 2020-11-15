@@ -26,8 +26,8 @@ import android.widget.TextView;
 
 
 
-import com.sramar.mylibrary.BuildConfig;
 import com.sramar.mylibrary.R;
+import com.sramar.mylibrary.utils.VersionUtil;
 import com.sramar.mylibrary.utils.fileUtils.FileDeleteUtil;
 import com.sramar.mylibrary.utils.fileUtils.FileRenameUtil;
 import com.sramar.mylibrary.utils.listener.OnSingleClickListener;
@@ -37,20 +37,6 @@ import com.sramar.mylibrary.utils.netRequest.TaskInfo;
 import java.io.File;
 import java.util.Date;
 
-//<provider
-//            android:name="android.support.v4.content.FileProvider"
-//                    android:authorities="${applicationId}.FileProvider"
-//                    android:exported="false"
-//                    android:grantUriPermissions="true">
-//<meta-data
-//        android:name="android.support.FILE_PROVIDER_PATHS"
-//        android:resource="@xml/rc_file_path" />
-//</provider>
-
-//<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-//<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-//<uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
-//<uses-permission android:name="android.permission.INTERNET" />
 
 public class MDialogUpdate extends Dialog {
     Activity activity;
@@ -283,7 +269,7 @@ public class MDialogUpdate extends Dialog {
 
 
     private boolean shouldSaveVersion(String newVersion,String newTime){
-        String version = sp.getString("version", BuildConfig.VERSION_NAME);
+        String version = sp.getString("version", VersionUtil.getAppVersionName(activity));
         String updateTime = sp.getString("updateTime", "");
 
         if (newVersion == null)
@@ -333,8 +319,8 @@ public class MDialogUpdate extends Dialog {
         return file.exists();
     }
     private boolean isUpdated(){
-        String newVersion = sp.getString("version",BuildConfig.VERSION_NAME);
-        String oldVersion = BuildConfig.VERSION_NAME;
+        String newVersion = sp.getString("version",VersionUtil.getAppVersionName(activity));
+        String oldVersion = VersionUtil.getAppVersionName(activity);
         String[] urln = newVersion.split("\\.");
         String[] urlo = oldVersion.split("\\.");
         if (urln.length > urlo.length)return false;
@@ -360,7 +346,7 @@ public class MDialogUpdate extends Dialog {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             // 给目标应用一个临时授权
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            Uri contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".FileProvider", apkfile);
+            Uri contentUri = FileProvider.getUriForFile(context, context.getPackageName() + ".FileProvider", apkfile);
             intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
         } else {
             intent.setDataAndType(Uri.fromFile(apkfile), "application/vnd.android.package-archive");

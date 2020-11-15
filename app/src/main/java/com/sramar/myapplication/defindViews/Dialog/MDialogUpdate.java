@@ -25,8 +25,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
-import com.sramar.myapplication.BuildConfig;
 import com.sramar.myapplication.R;
+import com.sramar.myapplication.utils.VersionUtil;
 import com.sramar.myapplication.utils.fileUtils.FileDeleteUtil;
 import com.sramar.myapplication.utils.fileUtils.FileRenameUtil;
 import com.sramar.myapplication.utils.listener.OnSingleClickListener;
@@ -282,7 +282,7 @@ public class MDialogUpdate extends Dialog {
 
 
     private boolean shouldSaveVersion(String newVersion,String newTime){
-        String version = sp.getString("version", BuildConfig.VERSION_NAME);
+        String version = sp.getString("version", VersionUtil.getAppVersionName(activity));
         String updateTime = sp.getString("updateTime", "");
 
         if (newVersion == null)
@@ -332,8 +332,8 @@ public class MDialogUpdate extends Dialog {
         return file.exists();
     }
     private boolean isUpdated(){
-        String newVersion = sp.getString("version",BuildConfig.VERSION_NAME);
-        String oldVersion = BuildConfig.VERSION_NAME;
+        String newVersion = sp.getString("version", VersionUtil.getAppVersionName(activity));
+        String oldVersion = VersionUtil.getAppVersionName(activity);
         String[] urln = newVersion.split("\\.");
         String[] urlo = oldVersion.split("\\.");
         if (urln.length > urlo.length)return false;
@@ -359,7 +359,7 @@ public class MDialogUpdate extends Dialog {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             // 给目标应用一个临时授权
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            Uri contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".FileProvider", apkfile);
+            Uri contentUri = FileProvider.getUriForFile(context, context.getPackageName() + ".FileProvider", apkfile);
             intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
         } else {
             intent.setDataAndType(Uri.fromFile(apkfile), "application/vnd.android.package-archive");
