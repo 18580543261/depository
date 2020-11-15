@@ -9,9 +9,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
-import androidx.core.app.ActivityCompat;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -48,24 +48,16 @@ public class PermissionManager {
         return isGrant;
     }
 
-    public boolean reqPermission (PermissionType permissionType){
-        if (activity == null){
-            Log.e("momo","PermissionManager: reqPermission: activity为空:");
-            return false;
-        }
-        Log.e("momo","开始申请权限："+permissionType.permission[0]);
-        boolean isGrant = isPermited(permissionType);
-        if (!isGrant)ActivityCompat.requestPermissions(activity, permissionType.permission, permissionType.requestCode);
-        return isGrant;
-    }
-    public void reqPermission (PermissionType permissionType,StatusListener listener){
-        if (reqPermission(permissionType))
-            listener.onPermitted();
+    public void reqPermission (PermissionType permissionType){
+        String[] needPermissions = new String[]{permissionType.permission[0]};
+        checkPermissions(needPermissions);
     }
     public void reqPermissions(PermissionType[] permissionTypes){
-        for (PermissionType permissionType:permissionTypes) {
-            reqPermission(permissionType);
+        String[] needPermissions = new String[permissionTypes.length];
+        for (int i = 0;i < permissionTypes.length;i++){
+            needPermissions[i] = permissionTypes[i].permission[0];
         }
+        checkPermissions(needPermissions);
     }
 
     public interface StatusListener{
@@ -122,24 +114,6 @@ public class PermissionManager {
         return resCode.incrementAndGet();
     }
 
-
-
-
-
-
-
-
-
-    /**
-     * 需要进行检测的权限数组
-     */
-    protected String[] needPermissions = {
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-    };
 
     private static final int PERMISSON_REQUESTCODE = 0;
 

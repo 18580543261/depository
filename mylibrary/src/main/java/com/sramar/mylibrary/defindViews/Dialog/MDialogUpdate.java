@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -24,9 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-
-
 import com.sramar.mylibrary.R;
+import com.sramar.mylibrary.gradle.MFileProvider;
 import com.sramar.mylibrary.utils.VersionUtil;
 import com.sramar.mylibrary.utils.fileUtils.FileDeleteUtil;
 import com.sramar.mylibrary.utils.fileUtils.FileRenameUtil;
@@ -346,7 +344,9 @@ public class MDialogUpdate extends Dialog {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             // 给目标应用一个临时授权
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            Uri contentUri = FileProvider.getUriForFile(context, context.getPackageName() + ".FileProvider", apkfile);
+
+            Uri contentUri = MFileProvider.getUriForFile(context, context.getPackageName() + ".FileProvider", apkfile);
+
             intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
         } else {
             intent.setDataAndType(Uri.fromFile(apkfile), "application/vnd.android.package-archive");

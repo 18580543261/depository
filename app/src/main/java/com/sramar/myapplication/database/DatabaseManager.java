@@ -4,7 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.sramar.myapplication.baseApplication.BaseApplication;
+
+import com.sramar.mylibrary.baseApplication.BaseApplication;
 
 import java.util.HashMap;
 import java.util.Iterator;
