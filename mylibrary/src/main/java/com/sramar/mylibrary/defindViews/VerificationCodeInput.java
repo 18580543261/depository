@@ -18,7 +18,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.sramar.myapplication.R;
+
+import com.sramar.mylibrary.R;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 
-import androidx.core.app.ActivityCompat;
 
 import java.io.UnsupportedEncodingException;
 import java.util.UUID;

@@ -4,8 +4,9 @@ import android.media.MediaRecorder;
 import android.os.Handler;
 import android.util.Log;
 
-import com.sramar.myapplication.baseApplication.Constances;
-import com.sramar.myapplication.utils.TimeUtil;
+
+import com.sramar.mylibrary.baseApplication.Constances;
+import com.sramar.mylibrary.utils.TimeUtil;
 
 import java.io.File;
 import java.io.IOException;

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
@@ -13,9 +15,8 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 
-import com.sramar.myapplication.R;
+import com.sramar.mylibrary.R;
 
 
 public class MDialog extends Dialog {

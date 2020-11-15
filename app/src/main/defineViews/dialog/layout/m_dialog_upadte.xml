@@ -17,7 +17,7 @@
             <LinearLayout
                 android:id="@+id/head"
                 android:orientation="horizontal"
-                android:background="@color/colorPrimary"
+                android:background="@color/updateTheme"
                 android:layout_width="match_parent"
                 android:layout_height="80dp">
 
@@ -94,7 +94,7 @@
 
                     <TextView
                         android:text="不更新无法使用APP, 是否立即更新 ?"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/updateTheme"
                         android:textSize="14sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>

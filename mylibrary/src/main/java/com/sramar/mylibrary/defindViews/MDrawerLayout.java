@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.AbsSavedState;
 import android.view.KeyEvent;
@@ -24,35 +25,22 @@ import android.view.ViewParent;
 import android.view.WindowInsets;
 import android.view.accessibility.AccessibilityEvent;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-import androidx.customview.widget.ViewDragHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//import android.support.annotation.ColorInt;
-//import android.support.annotation.DrawableRes;
-//import android.support.annotation.NonNull;
-//import android.support.annotation.Nullable;
-//import android.support.annotation.RestrictTo;
-//import android.support.v4.content.ContextCompat;
-//import android.support.v4.graphics.drawable.DrawableCompat;
-//import android.support.v4.view.AbsSavedState;
-//import android.support.v4.view.AccessibilityDelegateCompat;
-//import android.support.v4.view.GravityCompat;
-//import android.support.v4.view.ViewCompat;
-//import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
-//import android.support.v4.widget.ViewDragHelper;
+import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.view.AccessibilityDelegateCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
+import android.support.v4.widget.ViewDragHelper;
 
 public class MDrawerLayout extends ViewGroup {
     private static final String TAG = "MDrawerLayout";
@@ -490,7 +478,7 @@ public class MDrawerLayout extends ViewGroup {
             if (this.hasWindowFocus()) {
                 View rootView = this.getRootView();
                 if (rootView != null) {
-                    rootView.sendAccessibilityEvent(32);
+                    rootView.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
                 }
             }
         }
@@ -511,7 +499,7 @@ public class MDrawerLayout extends ViewGroup {
 
             this.updateChildrenImportantForAccessibility(drawerView, true);
             if (this.hasWindowFocus()) {
-                this.sendAccessibilityEvent(32);
+                this.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
             }
         }
 
@@ -1575,7 +1563,7 @@ public class MDrawerLayout extends ViewGroup {
         }
 
         public boolean dispatchPopulateAccessibilityEvent(View host, AccessibilityEvent event) {
-            if (event.getEventType() == 32) {
+            if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
                 List<CharSequence> eventText = event.getText();
                 View visibleDrawer = MDrawerLayout.this.findVisibleDrawer();
                 if (visibleDrawer != null) {
@@ -1713,7 +1701,7 @@ public class MDrawerLayout extends ViewGroup {
             }
 
             MDrawerLayout.this.setDrawerViewOffset(changedView, offset);
-            changedView.setVisibility(offset == 0.0F ? 4 : 0);
+            changedView.setVisibility(offset == 0.0F ? INVISIBLE : VISIBLE);
             MDrawerLayout.this.invalidate();
         }
 
@@ -1818,10 +1806,12 @@ public class MDrawerLayout extends ViewGroup {
         int lockModeStart;
         int lockModeEnd;
         public static final Creator<SavedState> CREATOR = new ClassLoaderCreator<SavedState>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             public MDrawerLayout.SavedState createFromParcel(Parcel in, ClassLoader loader) {
                 return new MDrawerLayout.SavedState(in, loader);
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.N)
             public MDrawerLayout.SavedState createFromParcel(Parcel in) {
                 return new MDrawerLayout.SavedState(in, (ClassLoader)null);
             }
@@ -1831,6 +1821,7 @@ public class MDrawerLayout extends ViewGroup {
             }
         };
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         public SavedState(@NonNull Parcel in, @Nullable ClassLoader loader) {
             super(in, loader);
             this.openDrawerGravity = in.readInt();

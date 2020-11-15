@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -22,8 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 
 
 import com.sramar.mylibrary.BuildConfig;
@@ -85,7 +85,7 @@ public class MDialogUpdate extends Dialog {
         }
     }
 
-    public MDialogUpdate(@NonNull Activity activity,String version, String url, String updateLog, String updateBy, String updateTime,boolean is_Compel_update,OnCancelListener singleClickListener){
+    public MDialogUpdate(@NonNull Activity activity, String version, String url, String updateLog, String updateBy, String updateTime, boolean is_Compel_update, OnCancelListener singleClickListener){
         this(activity);
         this.saveVersion(version, url, updateLog, updateBy, updateTime, is_Compel_update);
         this.cancelListener = singleClickListener;

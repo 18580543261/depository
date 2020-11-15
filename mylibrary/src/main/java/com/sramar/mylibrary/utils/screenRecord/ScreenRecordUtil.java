@@ -11,8 +11,9 @@ import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.util.Log;
 
-import com.sramar.myapplication.baseApplication.Constances;
-import com.sramar.myapplication.utils.ScreenUtil;
+
+import com.sramar.mylibrary.baseApplication.Constances;
+import com.sramar.mylibrary.utils.ScreenUtil;
 
 import java.io.IOException;
 
