@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
+
 //网络监听
 public class NetStatusReceiver extends BroadcastReceiver {
 
@@ -21,7 +22,7 @@ public class NetStatusReceiver extends BroadcastReceiver {
     private static long ETHERNET_TIME=0;
     private static long NONE_TIME=0;
 
-    private static int LAST_TYPE=-3;
+    private static AppManager.NetStatus LAST_TYPE= AppManager.NetStatus.NETWORK_MOBILE;
 
 
     @Override
@@ -31,21 +32,22 @@ public class NetStatusReceiver extends BroadcastReceiver {
             long time=getTime();
             Log.e("momo","NetStatusReceiver: onReceive: time: "+time);
             if(time!=WIFI_TIME&&time!=ETHERNET_TIME&&time!=NONE_TIME){
-                final int netWorkState=getNetWorkState(context);
-                if((netWorkState==0&&LAST_TYPE!=0) || (netWorkState==1&&LAST_TYPE!=1)){
+                final AppManager.NetStatus netWorkState=getNetWorkState(context);
+                if((netWorkState== AppManager.NetStatus.NETWORK_MOBILE&&LAST_TYPE!=AppManager.NetStatus.NETWORK_MOBILE) || (netWorkState== AppManager.NetStatus.NETWORK_WIFI&&LAST_TYPE!=AppManager.NetStatus.NETWORK_WIFI)){
 
-                    if (netWorkState==0&&LAST_TYPE!=0){
+                    if (netWorkState==AppManager.NetStatus.NETWORK_WIFI&&LAST_TYPE!=AppManager.NetStatus.NETWORK_WIFI){
                         WIFI_TIME=time;
                         LAST_TYPE=netWorkState;
+                        AppManager.getInstance().setNetStatus(AppManager.NetStatus.NETWORK_WIFI);
                     }else {
                         ETHERNET_TIME=time;
                         LAST_TYPE=netWorkState;
+                        AppManager.getInstance().setNetStatus(AppManager.NetStatus.NETWORK_MOBILE);
                     }
-                    AppManager.getInstance().setNetStatus(true);
-                }else if(netWorkState==-1&&LAST_TYPE!=-1){
+                }else if(netWorkState== AppManager.NetStatus.NETWORK_NONE&&LAST_TYPE!=AppManager.NetStatus.NETWORK_NONE){
                     NONE_TIME=time;
                     LAST_TYPE=netWorkState;
-                    AppManager.getInstance().setNetStatus(false);
+                    AppManager.getInstance().setNetStatus(AppManager.NetStatus.NETWORK_NONE);
                 }
             }
         }
@@ -56,24 +58,22 @@ public class NetStatusReceiver extends BroadcastReceiver {
         return Long.valueOf(date);
     }
 
-    private static final int NETWORK_NONE=-1; //无网络连接
-    private static final int NETWORK_WIFI=0; //wifi
-    private static final int NETWORK_MOBILE=1; //数据网络
 
-    public static int getNetWorkState(Context context){
+
+    public static AppManager.NetStatus getNetWorkState(Context context){
         ConnectivityManager connectivityManager=(ConnectivityManager)
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo=connectivityManager.getActiveNetworkInfo();
         if(activeNetworkInfo!=null&&activeNetworkInfo.isConnected()){
             if(activeNetworkInfo.getType()==(ConnectivityManager.TYPE_WIFI)){
-                return NETWORK_WIFI;
+                return AppManager.NetStatus.NETWORK_WIFI;
             }else if(activeNetworkInfo.getType()==(ConnectivityManager.TYPE_MOBILE)){
-                return NETWORK_MOBILE;
+                return AppManager.NetStatus.NETWORK_MOBILE;
             }
         }else{
-            return NETWORK_NONE;
+            return AppManager.NetStatus.NETWORK_NONE;
         }
-        return NETWORK_NONE;
+        return AppManager.NetStatus.NETWORK_NONE;
     }
 
 }

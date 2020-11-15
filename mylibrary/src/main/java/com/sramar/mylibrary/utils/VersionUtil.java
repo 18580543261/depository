@@ -16,7 +16,7 @@ public class VersionUtil {
             // versionName = pi.versionName;
             versioncode = pi.versionCode;
         } catch (Exception e) {
-            Log.e("VersionInfo", "Exception", e);
+            e.printStackTrace();
         }
         return versioncode + "";
     }
@@ -30,9 +30,8 @@ public class VersionUtil {
             PackageManager pm = context.getPackageManager();
             PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
             versionName = pi.versionName;
-            Log.e("VersionInfo", "getAppVersionName: versionName: "+versionName);
         } catch (Exception e) {
-            Log.e("VersionInfo", "Exception", e);
+            e.printStackTrace();
         }
         return versionName;
     }

@@ -12,10 +12,9 @@ import com.sramar.mylibrary.appManager.callbacks.ScreenReceiver;
 import com.sramar.mylibrary.baseApplication.BaseApplication;
 
 public class AppManager {
-    private boolean isNetWork = true;
+    private NetStatus netStatus = NetStatus.NETWORK_MOBILE;
     private boolean isInFore = true;
     private boolean isScreen = true;
-
 
     private BroadcastReceiver screenReceiver;
     private BroadcastReceiver netStatusReceiver;
@@ -42,6 +41,8 @@ public class AppManager {
     }
 
     private void registScreenManager(){
+        if (screenReceiver != null)
+            return;
         screenReceiver = new ScreenReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.intent.action.SCREEN_OFF");
@@ -55,6 +56,8 @@ public class AppManager {
         }
     }
     private void registNetStateManager(){
+        if (netStatusReceiver != null)
+            return;
         netStatusReceiver = new NetStatusReceiver();
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         context.registerReceiver(netStatusReceiver,intentFilter);
@@ -89,9 +92,14 @@ public class AppManager {
         unRegistNetStateManager();
     }
 
-    public void setNetStatus(boolean isNetWork){
-        this.isNetWork = isNetWork;
+    public void setNetStatus(NetStatus netStatus) {
+        this.netStatus = netStatus;
     }
+
+    public NetStatus getNetStatus() {
+        return NetStatusReceiver.getNetWorkState(context);
+    }
+
     public void setInFore(boolean isInFore){
         this.isInFore = isInFore;
     }
@@ -109,5 +117,10 @@ public class AppManager {
         void foregStatus(boolean isInFore);
     }
 
+    public enum NetStatus{
+        NETWORK_NONE,
+        NETWORK_WIFI,
+        NETWORK_MOBILE;
+    }
 
 }

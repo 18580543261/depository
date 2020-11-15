@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.sramar.mylibrary.R;
+import com.sramar.mylibrary.appManager.AppManager;
 import com.sramar.mylibrary.gradle.MFileProvider;
 import com.sramar.mylibrary.utils.VersionUtil;
 import com.sramar.mylibrary.utils.fileUtils.FileDeleteUtil;
@@ -45,7 +46,7 @@ public class MDialogUpdate extends Dialog {
     String updateVersion;
     String updateLog;
 
-    OnCancelListener cancelListener;
+    OnDismissListener dismissListener;
     OnSingleClickListener updateListener;
     CompoundButton.OnCheckedChangeListener tipListener;
 
@@ -69,10 +70,16 @@ public class MDialogUpdate extends Dialog {
         }
     }
 
-    public MDialogUpdate(@NonNull Activity activity, String version, String url, String updateLog, String updateBy, String updateTime, boolean is_Compel_update, OnCancelListener singleClickListener){
+    @Override
+    public void dismiss() {
+        super.dismiss();
+    }
+
+    public MDialogUpdate(@NonNull Activity activity, String version, String url, String updateLog, String updateBy, String updateTime, boolean is_Compel_update, OnDismissListener dismissListener){
         this(activity);
         this.saveVersion(version, url, updateLog, updateBy, updateTime, is_Compel_update);
-        this.cancelListener = singleClickListener;
+        this.dismissListener = dismissListener;
+
     }
 
     @Override
@@ -138,6 +145,7 @@ public class MDialogUpdate extends Dialog {
         LinearLayout ly_compel_false = findViewById(R.id.update_compel_false);
         TextView tv_upload_version = findViewById(R.id.update_version);
         TextView tv_upload_log = findViewById(R.id.update_log);
+        TextView tv_update_wifi = findViewById(R.id.update_wifi);
         CheckBox cb_update_tip = findViewById(R.id.update_compel_false_tip);
         btn_update = findViewById(R.id.update_button);
         btn_install = findViewById(R.id.install_button);
@@ -148,8 +156,10 @@ public class MDialogUpdate extends Dialog {
         ly_compel_true.setVisibility(isCompel?View.VISIBLE:View.GONE);
         ly_compel_false.setVisibility(isCompel?View.GONE:View.VISIBLE);
         ly_cancel.setVisibility(isCompel?View.GONE:View.VISIBLE);
+        tv_update_wifi.setVisibility(AppManager.getInstance().getNetStatus() == AppManager.NetStatus.NETWORK_WIFI?View.VISIBLE:View.INVISIBLE);
         tv_upload_log.setText(updateLog);
         tv_upload_version.setText(updateVersion);
+
 
         checkVersion();
 
@@ -206,11 +216,11 @@ public class MDialogUpdate extends Dialog {
     }
 
     private void setControl(){
-        if (cancelListener == null){
-            cancelListener = new OnCancelListener() {
+        if (dismissListener == null){
+            dismissListener = new OnDismissListener() {
                 @Override
-                public void onCancel(DialogInterface dialog) {
-                    Log.e("momo","MDialogUpdate: onCancel: ");
+                public void onDismiss(DialogInterface dialog) {
+                    Log.e("momo","MDialogUpdate: onDismiss: ");
                 }
             };
         }
@@ -239,7 +249,7 @@ public class MDialogUpdate extends Dialog {
             });
 
         }else {
-            setOnCancelListener(cancelListener);
+            setOnDismissListener(dismissListener);
         }
 
     }
@@ -256,9 +266,8 @@ public class MDialogUpdate extends Dialog {
         this.updateLog = content;
     }
 
-    private void setCancelListener(OnCancelListener singleClickListener){
-        this.cancelListener = singleClickListener;
-
+    public void setDismissListener(OnDismissListener dismissListener) {
+        this.dismissListener = dismissListener;
     }
 
     private void setUpdateListener(OnSingleClickListener singleClickListener){

@@ -27,9 +27,9 @@ public class MainActivity extends BaseActivity {
 
         MDialogUpdate dialogUpdate = new MDialogUpdate(activity,
                 "1.0.4", "http://acj6.0098118.com/pc6_soure/2020-10-6/d071f46de1fbbfdj7wl1EuteNuKarU.apk", "1.修复漏洞2", "momo", "155", false,
-                new DialogInterface.OnCancelListener() {
+                new DialogInterface.OnDismissListener() {
                     @Override
-                    public void onCancel(DialogInterface dialog) {
+                    public void onDismiss(DialogInterface dialog) {
 
                     }
                 });
