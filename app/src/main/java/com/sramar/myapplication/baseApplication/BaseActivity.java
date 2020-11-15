@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,6 +22,10 @@ public class BaseActivity extends AppCompatActivity {
         context = this;
 
 //        setActionBar();
+    }
+
+    protected View getRootView(){
+        return ((ViewGroup)activity.findViewById(android.R.id.content)).getChildAt(0);
     }
 
     //设置Actionbar和状态栏

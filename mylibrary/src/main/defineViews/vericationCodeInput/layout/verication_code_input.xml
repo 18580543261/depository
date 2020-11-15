@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ver="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.sramar.myapplication.defindViews.VerificationCodeInput
+        android:digits="1234567890"
+        android:id="@+id/login4_edt_password"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:theme="@style/MyEditText"
+        ver:box="6"
+        ver:child_h_padding="5dp"
+        ver:child_width="30dp"
+        ver:child_height="50dp"/>
+
+</LinearLayout>

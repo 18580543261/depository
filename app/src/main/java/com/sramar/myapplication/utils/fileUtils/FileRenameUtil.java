@@ -1,4 +1,6 @@
-package com.sramar.myapplication.utils;
+package com.sramar.myapplication.utils.fileUtils;
+
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,13 +10,14 @@ import java.util.Date;
 import java.util.UUID;
 
 public class FileRenameUtil {
+
     //修改文件名，并转为MD5编码
     public static String renameFile(String oldName){
         String fileNamea = encryptMD5(getFileNameNoEx(oldName) +"-"+ UUID.randomUUID()+new Date().getTime());
         final String renamed = fileNamea+getExtensionName(oldName);
         return renamed;
     }
-    public static String renameFile(File file){
+    public static String encodeNameFile(File file){
         if (file.exists()){
             return renameFile(file.getName());
         }else {
@@ -25,6 +28,28 @@ public class FileRenameUtil {
             }
             return null;
         }
+    }
+    public static void renameFile(File file,String newName){
+        String newPath = "";
+        if (file.exists()){
+            if (newName.startsWith("/") || newName.startsWith("\\"))
+                newPath = newName;
+            else
+                newPath = file.getParentFile().getAbsolutePath()+"\\"+newName;
+            Log.e("momo","FileRenameUtil: renameFile: newPath: "+newPath);
+            file.renameTo(new File(newPath));
+
+        }else {
+            try {
+                throw new FileNotFoundException("FileRenameUtil: renameFile: file不存在");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public static void renameFile(String filepath,String newName){
+        File file = new File(filepath);
+        renameFile(file,newName);
     }
 
      //Java文件操作 获取文件扩展名
