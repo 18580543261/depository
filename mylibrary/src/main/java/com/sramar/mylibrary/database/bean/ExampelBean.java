@@ -1,10 +1,11 @@
 package com.sramar.mylibrary.database.bean;
 
-import com.sramar.myapplication.database.ABeanFieldDesc;
-import com.sramar.myapplication.database.ABeanTable;
-import com.sramar.myapplication.database.EBeanField;
-import com.sramar.myapplication.database.EBeanFieldDesc;
-import com.sramar.myapplication.database.EBeanTable;
+
+import com.sramar.mylibrary.database.ABeanFieldDesc;
+import com.sramar.mylibrary.database.ABeanTable;
+import com.sramar.mylibrary.database.EBeanField;
+import com.sramar.mylibrary.database.EBeanFieldDesc;
+import com.sramar.mylibrary.database.EBeanTable;
 
 @ABeanFieldDesc(eField = EBeanField.ALL)
 public class ExampelBean {
