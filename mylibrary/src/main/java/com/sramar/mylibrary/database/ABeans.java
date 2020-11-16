@@ -18,16 +18,16 @@ public abstract class ABeans {
 
     public static final String[] ALL_KEY_PHONE = {"key_phone"};
 
-    protected ArrayList<String> keyFields;
-    protected ArrayList<String> mFieldsName;
-    protected ArrayList<String> mFields;
+    public ArrayList<String> keyFields;
+    public ArrayList<String> mFieldsName;
+    public ArrayList<String> mFields;
 
-    protected String createSql;
+    public String createSql;
 
 
 
-    protected String tableName = "";
-    protected int version = 1;
+    public String tableName = "";
+    public int version = 1;
 
     public ABeans(){
         initTableNameAndVersion();

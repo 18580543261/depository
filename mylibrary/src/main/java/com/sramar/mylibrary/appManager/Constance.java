@@ -4,6 +4,14 @@ package com.sramar.mylibrary.appManager;
 import com.sramar.mylibrary.exceptions.SingleInstantionException;
 
 public class Constance {
+    static class Cons{
+         final static String serverHttpAddress = "http://www.smaram.com";
+         final static String serverWsAddress = "http://www.smaram.com";
+
+         static String recorderOutputDir;
+         static long screenRecords;
+    }
+
     private static Constance instance;
     private Constance(){
         if (instance != null){
@@ -25,25 +33,19 @@ public class Constance {
         return instance;
     }
 
-    private final static String serverHttpAddress = "http://www.smaram.com";
-    private final static String serverWsAddress = "http://www.smaram.com";
-
-    private String recorderOutputDir;
-    private long screenRecords;
-
     public static String getServerHttpAddress() {
-        return serverHttpAddress;
+        return Cons.serverHttpAddress;
     }
 
     public static String getServerWsAddress() {
-        return serverWsAddress;
+        return Cons.serverWsAddress;
     }
 
     public String getRecorderOutputDir() {
-        return recorderOutputDir;
+        return Cons.recorderOutputDir;
     }
 
     public long getScreenRecords() {
-        return screenRecords;
+        return Cons.screenRecords;
     }
 }

@@ -1,11 +1,17 @@
-package com.sramar.mylibrary.database;
+package com.sramar.mylibrary.appManager;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
-import com.sramar.mylibrary.appManager.BaseApplication;
+import com.sramar.mylibrary.database.ABeans;
+import com.sramar.mylibrary.database.CreateTable;
+import com.sramar.mylibrary.database.DatabaseHelper;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -17,6 +23,8 @@ public class DatabaseManager {
     private AtomicInteger atomicInteger;
     //用AtomicInteger来解决数据表异步操作的问题
     private DatabaseHelper dbHelper;
+    private HashMap<String, DatabaseHelper> dbHelpers = new HashMap<>();
+    private HashMap<String, CreateTable> dbTables = new HashMap<>();
 
     //私有化构造器
     private DatabaseManager() {
@@ -24,21 +32,32 @@ public class DatabaseManager {
         if (dbOpenManager != null){
             return;
         }
-        initData();
+        init();
     }
 
     //初始化数据库
-    private void initData() {
-        if (dbHelper == null) {
-            dbHelper = new DatabaseHelper(BaseApplication.getContext());
-        }
+    private void init() {
         if (atomicInteger == null) {
             atomicInteger = new AtomicInteger();
         }
     }
+    //选择数据库分支
+    DatabaseManager changeData(Class dataHelperClass){
+        String key = dataHelperClass.getName();
+        if ( !dbHelpers.containsKey(key)|| dbHelpers.get(key) == null){
+            try {
+                Constructor constructor = dataHelperClass.getConstructor(Context.class);
+                dbHelpers.put(key, (DatabaseHelper) constructor.newInstance(BaseApplication.getContext()));
+            } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+        dbHelper = dbHelpers.get(key);
+        return this;
+    }
 
     //单例模式获取操作类对象(懒汉式)
-    public static DatabaseManager getInstance() {
+    protected static DatabaseManager getInstance() {
         if (dbOpenManager == null) {
             synchronized (DatabaseManager.class) {
                 if (dbOpenManager == null) {
@@ -51,7 +70,6 @@ public class DatabaseManager {
 
     //打开数据库. 返回数据库操作对象
     public synchronized SQLiteDatabase openDatabase() {
-        initData();
         //查看当前 AtomicInteger 中的 value 值
         if (atomicInteger.incrementAndGet() == 1) {
             try { //获取一个可读可写的数据库操作对象
@@ -62,6 +80,16 @@ public class DatabaseManager {
                 e.printStackTrace();
             }
         }
+        String dbName = dbHelper.getDatabaseName();
+        CreateTable createTable;
+        if (!dbTables.containsKey(dbName) || dbTables.get(dbName)== null){
+            createTable = new CreateTable(dbName,dbHelper.getMarkerPackageName());
+            dbTables.put(dbName,createTable);
+        }else {
+            createTable = dbTables.get(dbName);
+        }
+        createTable.createTables(database);
+
         return database;
     }
 
@@ -183,7 +211,7 @@ public class DatabaseManager {
         dbOpenManager.closeDatabase();
     }
 
-    private static boolean tabbleIsExist(SQLiteDatabase db, String tableName){
+    public static boolean tabbleIsExist(SQLiteDatabase db, String tableName){
         boolean result = false;
         if(tableName == null){
             return false;
