@@ -13,7 +13,7 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
 
-import com.sramar.mylibrary.baseApplication.BaseApplication;
+import com.sramar.mylibrary.appManager.BaseApplication;
 
 import java.lang.reflect.Method;
 

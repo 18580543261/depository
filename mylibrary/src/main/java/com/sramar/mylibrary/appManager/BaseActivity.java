@@ -1,4 +1,4 @@
-package com.sramar.mylibrary.baseApplication;
+package com.sramar.mylibrary.appManager;
 
 import android.app.Activity;
 import android.content.Context;

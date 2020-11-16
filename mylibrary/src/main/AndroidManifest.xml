@@ -10,7 +10,7 @@
 
 
     <application
-        android:name=".baseApplication.BaseApplication">
+        android:name=".appManager.BaseApplication">
         <provider
             android:name=".gradle.MFileProvider"
             android:authorities="${applicationId}.FileProvider"

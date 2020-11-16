@@ -9,7 +9,8 @@ import android.net.ConnectivityManager;
 import com.sramar.mylibrary.appManager.callbacks.ForegroundCallback;
 import com.sramar.mylibrary.appManager.callbacks.NetStatusReceiver;
 import com.sramar.mylibrary.appManager.callbacks.ScreenReceiver;
-import com.sramar.mylibrary.baseApplication.BaseApplication;
+import com.sramar.mylibrary.exceptions.ContextNullException;
+import com.sramar.mylibrary.exceptions.SingleInstantionException;
 
 public class AppManager {
     private NetStatus netStatus = NetStatus.NETWORK_MOBILE;
@@ -24,17 +25,28 @@ public class AppManager {
 
     private AppManager(){
         if (instance != null){
-            return;
+            try {
+                throw new SingleInstantionException();
+            } catch (SingleInstantionException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public synchronized static AppManager getInstance(){
+     protected synchronized static AppManager getInstance(){
         if (instance == null){
             synchronized (AppManager.class){
                 if (instance == null){
                     context = BaseApplication.getContext();
                     instance = new AppManager();
                 }
+            }
+        }
+        if (context == null){
+            try {
+                throw new ContextNullException();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return instance;

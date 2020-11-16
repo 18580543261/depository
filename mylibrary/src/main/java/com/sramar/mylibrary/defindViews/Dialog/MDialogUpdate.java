@@ -25,13 +25,14 @@ import android.widget.TextView;
 
 import com.sramar.mylibrary.R;
 import com.sramar.mylibrary.appManager.AppManager;
+import com.sramar.mylibrary.appManager.BaseApplication;
 import com.sramar.mylibrary.gradle.MFileProvider;
 import com.sramar.mylibrary.utils.VersionUtil;
 import com.sramar.mylibrary.utils.fileUtils.FileDeleteUtil;
 import com.sramar.mylibrary.utils.fileUtils.FileRenameUtil;
 import com.sramar.mylibrary.utils.listener.OnSingleClickListener;
-import com.sramar.mylibrary.utils.netRequest.DownloadRunnable;
-import com.sramar.mylibrary.utils.netRequest.TaskInfo;
+import com.sramar.mylibrary.netRequest.DownloadRunnable;
+import com.sramar.mylibrary.netRequest.TaskInfo;
 
 import java.io.File;
 import java.util.Date;
@@ -156,7 +157,7 @@ public class MDialogUpdate extends Dialog {
         ly_compel_true.setVisibility(isCompel?View.VISIBLE:View.GONE);
         ly_compel_false.setVisibility(isCompel?View.GONE:View.VISIBLE);
         ly_cancel.setVisibility(isCompel?View.GONE:View.VISIBLE);
-        tv_update_wifi.setVisibility(AppManager.getInstance().getNetStatus() == AppManager.NetStatus.NETWORK_WIFI?View.VISIBLE:View.INVISIBLE);
+        tv_update_wifi.setVisibility(BaseApplication.getAppManager().getNetStatus() == AppManager.NetStatus.NETWORK_WIFI?View.VISIBLE:View.INVISIBLE);
         tv_upload_log.setText(updateLog);
         tv_upload_version.setText(updateVersion);
 

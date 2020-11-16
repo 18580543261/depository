@@ -12,7 +12,7 @@ import android.media.projection.MediaProjectionManager;
 import android.util.Log;
 
 
-import com.sramar.mylibrary.baseApplication.Constances;
+import com.sramar.mylibrary.appManager.BaseApplication;
 import com.sramar.mylibrary.utils.ScreenUtil;
 
 import java.io.IOException;
@@ -51,7 +51,7 @@ public class ScreenRecordUtil {
 
     public void init(int resultCode,Intent data) {
 
-        mRecordFilePath = Constances.screenRecords + System.currentTimeMillis() + ".mp4";
+        mRecordFilePath = BaseApplication.getConstance().getScreenRecords() + System.currentTimeMillis() + ".mp4";
         int mRecordWidth = ScreenUtil.getDisplaySize().x;
         int mRecordHeight = ScreenUtil.getDisplaySize().y;
         int dpi = (int) ScreenUtil.getScreenDpi();

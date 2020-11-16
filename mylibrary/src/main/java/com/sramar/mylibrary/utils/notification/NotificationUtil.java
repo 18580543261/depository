@@ -6,7 +6,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Color;
 
-import com.sramar.mylibrary.baseApplication.BaseApplication;
+import com.sramar.mylibrary.appManager.BaseApplication;
 
 
 public class NotificationUtil {

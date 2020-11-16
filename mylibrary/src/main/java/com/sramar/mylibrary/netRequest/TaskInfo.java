@@ -1,4 +1,4 @@
-package com.sramar.mylibrary.utils.netRequest;
+package com.sramar.mylibrary.netRequest;
 
 public class TaskInfo {
     private String nameTmp;//文件名

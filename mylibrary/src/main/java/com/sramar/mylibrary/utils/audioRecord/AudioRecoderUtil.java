@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.util.Log;
 
 
-import com.sramar.mylibrary.baseApplication.Constances;
+import com.sramar.mylibrary.appManager.BaseApplication;
 import com.sramar.mylibrary.utils.TimeUtil;
 
 import java.io.File;
@@ -29,7 +29,7 @@ public class AudioRecoderUtil {
     public AudioRecoderUtil(){
  
         //默认保存足迹为/sdcard/record/下
-        this(Constances.recorderOutputDir);
+        this(BaseApplication.getConstance().getRecorderOutputDir());
     }
  
     public AudioRecoderUtil(String filePath) {
