@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.sramar.mylibrary.appManager.AppManager;
+import com.sramar.mylibrary.appManager.BaseApplication;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,16 +39,16 @@ public class NetStatusReceiver extends BroadcastReceiver {
                     if (netWorkState==AppManager.NetStatus.NETWORK_WIFI&&LAST_TYPE!=AppManager.NetStatus.NETWORK_WIFI){
                         WIFI_TIME=time;
                         LAST_TYPE=netWorkState;
-                        AppManager.getInstance().setNetStatus(AppManager.NetStatus.NETWORK_WIFI);
+                        BaseApplication.getAppManager().setNetStatus(AppManager.NetStatus.NETWORK_WIFI);
                     }else {
                         ETHERNET_TIME=time;
                         LAST_TYPE=netWorkState;
-                        AppManager.getInstance().setNetStatus(AppManager.NetStatus.NETWORK_MOBILE);
+                        BaseApplication.getAppManager().setNetStatus(AppManager.NetStatus.NETWORK_MOBILE);
                     }
                 }else if(netWorkState== AppManager.NetStatus.NETWORK_NONE&&LAST_TYPE!=AppManager.NetStatus.NETWORK_NONE){
                     NONE_TIME=time;
                     LAST_TYPE=netWorkState;
-                    AppManager.getInstance().setNetStatus(AppManager.NetStatus.NETWORK_NONE);
+                    BaseApplication.getAppManager().setNetStatus(AppManager.NetStatus.NETWORK_NONE);
                 }
             }
         }
