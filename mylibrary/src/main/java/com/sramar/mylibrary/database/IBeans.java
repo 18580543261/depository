@@ -14,7 +14,7 @@ import java.util.Vector;
 
 import dalvik.system.DexFile;
 
-public abstract class ABeans {
+public abstract class IBeans {
 
     public static final String[] ALL_KEY_PHONE = {"key_phone"};
 
@@ -29,7 +29,7 @@ public abstract class ABeans {
     public String tableName = "";
     public int version = 1;
 
-    public ABeans(){
+    public IBeans(){
         initTableNameAndVersion();
         initFields();
     }

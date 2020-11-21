@@ -24,8 +24,6 @@ android {
     sourceSets {
         main {
 
-            res.srcDirs += "src/main/defineViews/dialog/";
-            res.srcDirs += "src/main/defineViews/vericationCodeInput/";
         }
     }
 

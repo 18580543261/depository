@@ -94,7 +94,7 @@ public class NetRequest {
                 //对response的设置用来指定有网/无网下的缓存时长
 
                 Request request = chain.request();
-                if (BaseApplication.getAppManager().getNetStatus() == AppManager.NetStatus.NETWORK_NONE) {
+                if (BaseApplication.getInstance().getAppManager().getNetStatus() == AppManager.NetStatus.NETWORK_NONE) {
                     //无网络下强制使用缓存，无论缓存是否过期,此时该请求实际上不会被发送出去。
                     //有网络时则根据缓存时长来决定是否发出请求
                     request = request.newBuilder()
@@ -102,7 +102,7 @@ public class NetRequest {
                 }
 
                 Response response = chain.proceed(request);
-                if (BaseApplication.getAppManager().getNetStatus() != AppManager.NetStatus.NETWORK_NONE) {
+                if (BaseApplication.getInstance().getAppManager().getNetStatus() != AppManager.NetStatus.NETWORK_NONE) {
                     //有网络情况下，超过1分钟，则重新请求，否则直接使用缓存数据
                     int maxAge = 60; //缓存一分钟
                     String cacheControl = "public,max-age=" + maxAge;

@@ -35,8 +35,8 @@ public class UuidUtil {
 
                     final String androidId = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
                     // Use the Android ID unless it's broken, in which case fallback on deviceId,
-                    // unless it's not available, then fallback on a random number which we store
-                    // to a prefs file
+                    // unless it's not available, then fallback on aImpl random number which we store
+                    // to aImpl prefs file
                     try {
                         if (!"9774d56d682e549c".equals(androidId)) {
                             uuid = UUID.nameUUIDFromBytes(androidId.getBytes("utf8")).toString();

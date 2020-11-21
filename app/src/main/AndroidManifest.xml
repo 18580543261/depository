@@ -19,6 +19,8 @@
         </activity>
 
 
+        <meta-data android:name="app_name" android:value="com.sramar.myapplication.modules.MyApplication"/>
+
 
 
     </application>

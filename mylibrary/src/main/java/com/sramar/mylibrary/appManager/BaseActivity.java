@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
+
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -21,6 +24,26 @@ public class BaseActivity extends AppCompatActivity {
         context = this;
 
 //        setActionBar();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     protected View getRootView(){
@@ -42,5 +65,6 @@ public class BaseActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         getSupportActionBar().hide();//隐藏Actionbar
     }
+    
 
 }

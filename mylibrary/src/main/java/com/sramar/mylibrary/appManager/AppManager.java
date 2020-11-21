@@ -2,15 +2,20 @@ package com.sramar.mylibrary.appManager;
 
 import android.app.Application;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.util.Log;
 
 import com.sramar.mylibrary.appManager.callbacks.ForegroundCallback;
 import com.sramar.mylibrary.appManager.callbacks.NetStatusReceiver;
 import com.sramar.mylibrary.appManager.callbacks.ScreenReceiver;
-import com.sramar.mylibrary.exceptions.ContextNullException;
-import com.sramar.mylibrary.exceptions.SingleInstantionException;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 public class AppManager {
     private NetStatus netStatus = NetStatus.NETWORK_MOBILE;
@@ -19,37 +24,17 @@ public class AppManager {
 
     private BroadcastReceiver screenReceiver;
     private BroadcastReceiver netStatusReceiver;
-    private static Context context;
+    private Application application;
 
-    private static AppManager instance;
+    private List<OnForegChange> foreListener ;
+    private List<OnScreenChange> screListener ;
+    private List<OnNetWorkChange> netwListener;
 
-    private AppManager(){
-        if (instance != null){
-            try {
-                throw new SingleInstantionException();
-            } catch (SingleInstantionException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-     protected synchronized static AppManager getInstance(){
-        if (instance == null){
-            synchronized (AppManager.class){
-                if (instance == null){
-                    context = BaseApplication.getContext();
-                    instance = new AppManager();
-                }
-            }
-        }
-        if (context == null){
-            try {
-                throw new ContextNullException();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return instance;
+    public AppManager(Application application){
+        this.application = application;
+        foreListener = new CopyOnWriteArrayList<>();
+        screListener = new CopyOnWriteArrayList<>();
+        netwListener = new CopyOnWriteArrayList<>();
     }
 
     private void registScreenManager(){
@@ -60,11 +45,11 @@ public class AppManager {
         intentFilter.addAction("android.intent.action.SCREEN_OFF");
         intentFilter.addAction("android.intent.action.SCREEN_ON");
         intentFilter.addAction("android.intent.action.USER_PRESENT");
-        context.registerReceiver(screenReceiver, intentFilter);
+        application.registerReceiver(screenReceiver, intentFilter);
     }
     private void unRegistScreenManager(){
         if (screenReceiver != null){
-            context.unregisterReceiver(screenReceiver);
+            application.unregisterReceiver(screenReceiver);
         }
     }
     private void registNetStateManager(){
@@ -72,11 +57,11 @@ public class AppManager {
             return;
         netStatusReceiver = new NetStatusReceiver();
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        context.registerReceiver(netStatusReceiver,intentFilter);
+        application.registerReceiver(netStatusReceiver,intentFilter);
     }
     private void unRegistNetStateManager(){
         if (netStatusReceiver != null){
-            context.unregisterReceiver(netStatusReceiver);
+            application.unregisterReceiver(netStatusReceiver);
         }
     }
     private void registForegManager(Application application){
@@ -93,39 +78,100 @@ public class AppManager {
         });
     }
 
-    public AppManager registAppManager(Application application){
+    AppManager registAppManager(){
         registScreenManager();
         registNetStateManager();
         registForegManager(application);
-        return instance;
+        return this;
     }
     public void unregistAppManager(){
         unRegistScreenManager();
         unRegistNetStateManager();
     }
 
-    public void setNetStatus(NetStatus netStatus) {
-        this.netStatus = netStatus;
-    }
-
     public NetStatus getNetStatus() {
-        return NetStatusReceiver.getNetWorkState(context);
+        return NetStatusReceiver.getNetWorkState(application);
     }
 
     public void setInFore(boolean isInFore){
         this.isInFore = isInFore;
+        Iterator<OnForegChange> it = foreListener.iterator();
+        while (it.hasNext()){
+            OnForegChange li = it.next();
+            if (li != null){
+                li.foregStatus(isInFore);
+            }else {
+                it.remove();
+            }
+        }
+
     }
     public void setScreen(boolean isScreen){
         this.isScreen = isScreen;
+        Iterator<OnScreenChange> it = screListener.iterator();
+        while (it.hasNext()){
+            OnScreenChange li = it.next();
+            if (li != null){
+                li.screenStatus(isScreen);
+            }else {
+                it.remove();
+            }
+        }
+    }
+    public void setNetStatus(NetStatus netStatus) {
+        this.netStatus = netStatus;
+        Iterator<OnNetWorkChange> it = netwListener.iterator();
+        while (it.hasNext()){
+            OnNetWorkChange li = it.next();
+            if (li != null){
+                li.netStatus(netStatus);
+            }else {
+                it.remove();
+            }
+        }
     }
 
-    public interface onNetWorkChange{
-        void netStatus(boolean isNetWork);
+    public void registListener(OnAppStatusChangeListener listener){
+        if (listener == null){
+            Log.e("momo","AppManager: registListener: listener为空");
+            return;
+        }
+        if (listener instanceof OnForegChange){
+            foreListener.add((OnForegChange) listener);
+        }
+        if (listener instanceof OnScreenChange){
+            screListener.add((OnScreenChange) listener);
+        }
+        if (listener instanceof OnNetWorkChange){
+            netwListener.add((OnNetWorkChange) listener);
+        }
     }
-    public interface onScreenChange{
+    public void unRegistListener(OnAppStatusChangeListener listener){
+        if (listener == null){
+            Log.e("momo","AppManager: registListener: listener为空");
+            return;
+        }
+        if (listener instanceof OnForegChange){
+            foreListener.remove(listener);
+        }
+        if (listener instanceof OnScreenChange){
+            screListener.remove(listener);
+        }
+        if (listener instanceof OnNetWorkChange){
+            netwListener.remove(listener);
+        }
+    }
+
+    private interface  OnAppStatusChangeListener{
+
+    }
+    public interface OnNetWorkChange extends OnAppStatusChangeListener{
+        void netStatus(NetStatus isNetWork);
+    }
+    public interface OnScreenChange extends OnAppStatusChangeListener{
         void screenStatus(boolean isScreenOn);
     }
-    public interface onForegChange{
+    public interface OnForegChange extends OnAppStatusChangeListener{
         void foregStatus(boolean isInFore);
     }
 

@@ -13,9 +13,9 @@ public class ScreenReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {    //屏幕关闭的时候接受到广播
-            BaseApplication.getAppManager().setScreen(false);
+            BaseApplication.getInstance().getAppManager().setScreen(false);
         } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {   //屏幕打开的时候发送广播
-            BaseApplication.getAppManager().setScreen(true);
+            BaseApplication.getInstance().getAppManager().setScreen(true);
         }
     }
 }

@@ -39,16 +39,16 @@ public class NetStatusReceiver extends BroadcastReceiver {
                     if (netWorkState==AppManager.NetStatus.NETWORK_WIFI&&LAST_TYPE!=AppManager.NetStatus.NETWORK_WIFI){
                         WIFI_TIME=time;
                         LAST_TYPE=netWorkState;
-                        BaseApplication.getAppManager().setNetStatus(AppManager.NetStatus.NETWORK_WIFI);
+                        BaseApplication.getInstance().getAppManager().setNetStatus(AppManager.NetStatus.NETWORK_WIFI);
                     }else {
                         ETHERNET_TIME=time;
                         LAST_TYPE=netWorkState;
-                        BaseApplication.getAppManager().setNetStatus(AppManager.NetStatus.NETWORK_MOBILE);
+                        BaseApplication.getInstance().getAppManager().setNetStatus(AppManager.NetStatus.NETWORK_MOBILE);
                     }
                 }else if(netWorkState== AppManager.NetStatus.NETWORK_NONE&&LAST_TYPE!=AppManager.NetStatus.NETWORK_NONE){
                     NONE_TIME=time;
                     LAST_TYPE=netWorkState;
-                    BaseApplication.getAppManager().setNetStatus(AppManager.NetStatus.NETWORK_NONE);
+                    BaseApplication.getInstance().getAppManager().setNetStatus(AppManager.NetStatus.NETWORK_NONE);
                 }
             }
         }

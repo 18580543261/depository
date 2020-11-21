@@ -4,11 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
-import com.sramar.mylibrary.database.ABeans;
+import com.sramar.mylibrary.database.IBeans;
 import com.sramar.mylibrary.database.CreateTable;
-import com.sramar.mylibrary.database.DatabaseHelper;
+import com.sramar.mylibrary.database.IDatabaseHelper;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -22,8 +21,8 @@ public class DatabaseManager {
     private SQLiteDatabase database;
     private AtomicInteger atomicInteger;
     //用AtomicInteger来解决数据表异步操作的问题
-    private DatabaseHelper dbHelper;
-    private HashMap<String, DatabaseHelper> dbHelpers = new HashMap<>();
+    private IDatabaseHelper dbHelper;
+    private HashMap<String, IDatabaseHelper> dbHelpers = new HashMap<>();
     private HashMap<String, CreateTable> dbTables = new HashMap<>();
 
     //私有化构造器
@@ -42,12 +41,12 @@ public class DatabaseManager {
         }
     }
     //选择数据库分支
-    DatabaseManager changeData(Class dataHelperClass){
+    public DatabaseManager changeData(Class dataHelperClass){
         String key = dataHelperClass.getName();
-        if ( !dbHelpers.containsKey(key)|| dbHelpers.get(key) == null){
+        if (!dbHelpers.containsKey(key)|| dbHelpers.get(key) == null){
             try {
-                Constructor constructor = dataHelperClass.getConstructor(Context.class);
-                dbHelpers.put(key, (DatabaseHelper) constructor.newInstance(BaseApplication.getContext()));
+                Constructor constructor = dataHelperClass.getDeclaredConstructor(Context.class);
+                dbHelpers.put(key, (IDatabaseHelper) constructor.newInstance(BaseApplication.getContext()));
             } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
                 e.printStackTrace();
             }
@@ -74,12 +73,12 @@ public class DatabaseManager {
         if (atomicInteger.incrementAndGet() == 1) {
             try { //获取一个可读可写的数据库操作对象
                 database = dbHelper.getWritableDatabase();
-                dbHelper.getWritableDatabase();
             } catch (Exception e) {
                 atomicInteger.set(0);
                 e.printStackTrace();
             }
         }
+
         String dbName = dbHelper.getDatabaseName();
         CreateTable createTable;
         if (!dbTables.containsKey(dbName) || dbTables.get(dbName)== null){
@@ -90,8 +89,10 @@ public class DatabaseManager {
         }
         createTable.createTables(database);
 
+
         return database;
     }
+
 
     //关闭数据库
     public synchronized void closeDatabase() {
@@ -114,7 +115,7 @@ public class DatabaseManager {
         SQLiteDatabase db = dbOpenManager.openDatabase();
         LinkedList<Map<String,String>> linkedList = new LinkedList<>();
         try {
-            ABeans aBean = (ABeans) clazz.newInstance();
+            IBeans aBean = (IBeans) clazz.newInstance();
             if (!tabbleIsExist(db,aBean.tableName)){
                 throw new Exception(aBean.tableName+"表格不存在");
             }
@@ -137,7 +138,7 @@ public class DatabaseManager {
         SQLiteDatabase db = dbOpenManager.openDatabase();
         LinkedList<Map<String,String>> linkedList = new LinkedList<>();
         try {
-            ABeans aBean = (ABeans) clazz.newInstance();
+            IBeans aBean = (IBeans) clazz.newInstance();
             if (!tabbleIsExist(db,aBean.tableName)){
                 throw new Exception(aBean.tableName+"表格不存在");
             }
@@ -158,7 +159,7 @@ public class DatabaseManager {
         SQLiteDatabase db = dbOpenManager.openDatabase();
         LinkedList<Map<String,String>> linkedList = new LinkedList<>();
         try {
-            ABeans aBean = (ABeans) clazz.newInstance();
+            IBeans aBean = (IBeans) clazz.newInstance();
             if (!tabbleIsExist(db,aBean.tableName)){
                 throw new Exception(aBean.tableName+"表格不存在");
             }
@@ -190,7 +191,7 @@ public class DatabaseManager {
         SQLiteDatabase db = dbOpenManager.openDatabase();
         try {
 
-            ABeans aBean = (ABeans) clazz.newInstance();
+            IBeans aBean = (IBeans) clazz.newInstance();
             if (!tabbleIsExist(db,aBean.tableName)){
                 db.execSQL(aBean.createSql);
             }
@@ -226,6 +227,7 @@ public class DatabaseManager {
                     result = true;
                 }
             }
+            cursor.close();
 
         } catch (Exception e) {
             // TODO: handle exception

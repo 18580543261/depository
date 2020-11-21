@@ -1,5 +1,4 @@
-package com.sramar.mylibrary.database.bean;
-
+package com.sramar.myapplication.database.bean;
 
 import com.sramar.mylibrary.database.ABeanFieldDesc;
 import com.sramar.mylibrary.database.ABeanTable;
@@ -9,10 +8,10 @@ import com.sramar.mylibrary.database.EBeanTable;
 import com.sramar.mylibrary.database.IBeans;
 
 @ABeanFieldDesc(eField = EBeanField.ALL)
-public class ExampelBean extends IBeans {
+public class A {
     //表名以及版本
     @ABeanTable(EBeanTable.NAME)
-    public final static String TABLE_NAME = "my_example";
+    public final static String TABLE_NAME = "my_impl";
     @ABeanTable(EBeanTable.VERSION)
     public final static int TABLE_VERSION = 1;
 
