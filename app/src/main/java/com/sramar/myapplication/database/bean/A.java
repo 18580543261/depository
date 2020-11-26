@@ -8,7 +8,7 @@ import com.sramar.mylibrary.database.EBeanTable;
 import com.sramar.mylibrary.database.IBeans;
 
 @ABeanFieldDesc(eField = EBeanField.ALL)
-public class A {
+public class A extends IBeans{
     //表名以及版本
     @ABeanTable(EBeanTable.NAME)
     public final static String TABLE_NAME = "my_impl";

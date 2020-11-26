@@ -6,20 +6,20 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-
+/*
+**需要继承，并且设置单参数构造函数
+ */
 public abstract class IDatabaseHelper extends SQLiteOpenHelper {
 
-    private static String databaseName = "db_name";
-    private static int databaseVersion = 1;
+    private  String databaseName = "db_name";
+    private  int databaseVersion = 1;
     private Class markerPackageName = IBeans.class;
 
     public IDatabaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         markerPackageName = setMarkerPackageName();
-    }
-
-    public IDatabaseHelper(Context context) {
-        this(context,databaseName,null,databaseVersion);
+        databaseName = setDatabaseName();
+        databaseVersion = setDatabaseVersion();
     }
 
 
@@ -33,6 +33,8 @@ public abstract class IDatabaseHelper extends SQLiteOpenHelper {
 
 
     public abstract Class setMarkerPackageName();
+    public abstract String setDatabaseName();
+    public abstract int setDatabaseVersion();
 
     public String getDataName() {
         return databaseName;

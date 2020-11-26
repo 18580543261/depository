@@ -63,7 +63,7 @@ public class BaseApplication extends Application {
     }
     @CallSuper
     protected Class registDatabaseHelper(){
-        //自己继承DatabaseHelper，调用setDataName();setDataVersion();setMarkerPackageName();
+        //自己继承DatabaseHelper，并且设置单参数构造函数
         //其中，setMarkerPackageName的参数，是一个随意的java类，用以标志其包下bean的包名，xxx.xxx.xxx.bean包中，装载着继承了ABean的class
 
         return aImpl.class;

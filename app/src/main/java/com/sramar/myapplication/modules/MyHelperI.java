@@ -25,4 +25,14 @@ public class MyHelperI extends IDatabaseHelper {
     public Class setMarkerPackageName() {
         return Marker.class;
     }
+
+    @Override
+    public String setDatabaseName() {
+        return databaseName;
+    }
+
+    @Override
+    public int setDatabaseVersion() {
+        return databaseVersion;
+    }
 }

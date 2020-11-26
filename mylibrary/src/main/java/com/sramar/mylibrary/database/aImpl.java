@@ -21,4 +21,14 @@ public class aImpl extends IDatabaseHelper{
     public Class setMarkerPackageName() {
         return IBeans.class;
     }
+
+    @Override
+    public String setDatabaseName() {
+        return databaseName;
+    }
+
+    @Override
+    public int setDatabaseVersion() {
+        return databaseVersion;
+    }
 }

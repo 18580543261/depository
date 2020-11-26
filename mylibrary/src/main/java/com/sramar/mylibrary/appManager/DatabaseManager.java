@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.sramar.mylibrary.database.IBeans;
 import com.sramar.mylibrary.database.CreateTable;
@@ -43,6 +44,7 @@ public class DatabaseManager {
     //选择数据库分支
     public DatabaseManager changeData(Class dataHelperClass){
         String key = dataHelperClass.getName();
+        Log.e("momo","DatabaseManager: changeData: "+key);
         if (!dbHelpers.containsKey(key)|| dbHelpers.get(key) == null){
             try {
                 Constructor constructor = dataHelperClass.getDeclaredConstructor(Context.class);

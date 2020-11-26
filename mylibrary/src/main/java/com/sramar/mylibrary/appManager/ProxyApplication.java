@@ -147,6 +147,8 @@ public class ProxyApplication extends Application {
                 //是否存在name为app_name的meta-data数据
                 if (metaData.containsKey("app_name")) {
                     app_name = metaData.getString("app_name");
+                }else {
+                    app_name = BaseApplication.class.getName();
                 }
             }
         } catch (PackageManager.NameNotFoundException e) {
